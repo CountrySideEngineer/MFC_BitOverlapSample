@@ -7,6 +7,8 @@
 #include "MFC_BitOverlapSample.h"
 #include "MFC_BitOverlapSampleDlg.h"
 #include "afxdialogex.h"
+#include "CDataOffset.h"
+#include "CCheckOffsetOverlap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -87,9 +89,50 @@ HCURSOR CMFCBitOverlapSampleDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonRunCheck()
 {
-	AfxMessageBox(_T("ボタンが押下されました。"), MB_OK);
+	CDataOffset DataOffset1;
+	DataOffset1.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BOOL);
+	DataOffset1.SetOffset(_T("0.0"));
+	DataOffset1.SetOffset(_T(".0"));
+	DataOffset1.SetOffset(_T("0."));
+	DataOffset1.SetOffset(_T("0.00"));
+	DataOffset1.SetOffset(_T("0.0.0"));
+	DataOffset1.SetOffset(_T("0.9"));
+	DataOffset1.SetOffset(_T("0.A"));
+	DataOffset1.SetOffset(_T("0.F"));
+	DataOffset1.SetOffset(_T("0.G"));
+	DataOffset1.SetOffset(_T("10.F"));
+	CDataOffset DataOffset2;
+	DataOffset2.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BOOL);
+	DataOffset2.SetOffset(_T("0.1"));
+	CDataOffset DataOffset3;
+	DataOffset3.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BOOL);
+	DataOffset3.SetOffset(_T("0.2"));
+	CDataOffset DataOffset4;
+	DataOffset4.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BYTE);
+	DataOffset4.SetOffset(_T("3.3"));
+	CDataOffset DataOffset5;
+	DataOffset5.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_WORD);
+	DataOffset5.SetOffset(_T("10.0"));
+	CDataOffset DataOffset6;
+	DataOffset6.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_DWORD);
+	DataOffset6.SetOffset(_T("9.8"));
+	CArray<CDataOffset> DataToCheck;
+	DataToCheck.Add(DataOffset4);
+	DataToCheck.Add(DataOffset5);
+	DataToCheck.Add(DataOffset6);
+	DataToCheck.Add(DataOffset1);
+	DataToCheck.Add(DataOffset2);
+	DataToCheck.Add(DataOffset3);
+
+	CCheckOffsetOverlap CheckOffsetOverlap;
+
+	BOOL bCheckResult = CheckOffsetOverlap.RunCheck(DataToCheck);
+	if (TRUE == bCheckResult) {
+		AfxMessageBox(_T("重複なし"), MB_OK);
+	}
+	else {
+		AfxMessageBox(_T("重複あり"), MB_OK);
+	}
 }
