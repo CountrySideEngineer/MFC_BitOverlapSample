@@ -8,6 +8,10 @@ public:
 	virtual ~CCheckOffsetOverlap();
 	virtual BOOL RunCheck(const CArray<CDataOffset>& DataToCheck);
 
+#ifdef _UTEST
+	virtual WORD* GetDataArray() const { return this->m_DataArray; }
+#endif	//_UTEST
+
 protected:
 	virtual INT_PTR	GetDataSize(const CArray<CDataOffset>& DataToCheck);
 	virtual void AllocData(const INT_PTR DataSize);

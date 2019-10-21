@@ -12,6 +12,9 @@ TEST(CCheckOffsetOverlap, RunCheck_001)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0001, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_002)
@@ -25,6 +28,9 @@ TEST(CCheckOffsetOverlap, RunCheck_002)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0001, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_003)
@@ -38,6 +44,9 @@ TEST(CCheckOffsetOverlap, RunCheck_003)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0003, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_004)
@@ -51,6 +60,9 @@ TEST(CCheckOffsetOverlap, RunCheck_004)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x01FF, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_005)
@@ -64,6 +76,9 @@ TEST(CCheckOffsetOverlap, RunCheck_005)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x00FF, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_006)
@@ -77,6 +92,9 @@ TEST(CCheckOffsetOverlap, RunCheck_006)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x00FF, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_007)
@@ -90,6 +108,9 @@ TEST(CCheckOffsetOverlap, RunCheck_007)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFF, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_008)
@@ -103,6 +124,9 @@ TEST(CCheckOffsetOverlap, RunCheck_008)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFE, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_009)
@@ -116,6 +140,9 @@ TEST(CCheckOffsetOverlap, RunCheck_009)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x7FFF, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_010)
@@ -127,6 +154,9 @@ TEST(CCheckOffsetOverlap, RunCheck_010)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFF00, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_011)
@@ -140,6 +170,9 @@ TEST(CCheckOffsetOverlap, RunCheck_011)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFF, *DataArray);
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_012)
@@ -153,6 +186,10 @@ TEST(CCheckOffsetOverlap, RunCheck_012)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFF, *DataArray);
+	ASSERT_EQ(0x0000, *(DataArray + 1));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_013)
@@ -179,6 +216,11 @@ TEST(CCheckOffsetOverlap, RunCheck_014)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFF, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_015)
@@ -192,6 +234,11 @@ TEST(CCheckOffsetOverlap, RunCheck_015)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_016)
@@ -205,6 +252,11 @@ TEST(CCheckOffsetOverlap, RunCheck_016)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_017)
@@ -218,6 +270,11 @@ TEST(CCheckOffsetOverlap, RunCheck_017)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x00FF, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_018)
@@ -231,6 +288,11 @@ TEST(CCheckOffsetOverlap, RunCheck_018)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFF00, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_019)
@@ -244,6 +306,11 @@ TEST(CCheckOffsetOverlap, RunCheck_019)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_020)
@@ -257,6 +324,11 @@ TEST(CCheckOffsetOverlap, RunCheck_020)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_021)
@@ -270,6 +342,11 @@ TEST(CCheckOffsetOverlap, RunCheck_021)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_022)
@@ -283,6 +360,11 @@ TEST(CCheckOffsetOverlap, RunCheck_022)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_023)
@@ -296,6 +378,12 @@ TEST(CCheckOffsetOverlap, RunCheck_023)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0000, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
+	ASSERT_EQ(0x00FF, *(DataArray + 3));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_024)
@@ -309,6 +397,12 @@ TEST(CCheckOffsetOverlap, RunCheck_024)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFF, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
+	ASSERT_EQ(0xFFFF, *(DataArray + 3));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_025)
@@ -322,6 +416,12 @@ TEST(CCheckOffsetOverlap, RunCheck_025)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_FALSE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0xFFFF, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
+	ASSERT_EQ(0x0000, *(DataArray + 3));
 }
 
 TEST(CCheckOffsetOverlap, RunCheck_026)
@@ -358,4 +458,10 @@ TEST(CCheckOffsetOverlap, RunCheck_027)
 	CCheckOffsetOverlap TestData;
 
 	ASSERT_TRUE(TestData.RunCheck(DataToCheck));
+
+	WORD* DataArray = TestData.GetDataArray();
+	ASSERT_EQ(0x0001, *DataArray);
+	ASSERT_EQ(0xFFFF, *(DataArray + 1));
+	ASSERT_EQ(0xFFFF, *(DataArray + 2));
+	ASSERT_EQ(0x0FFF, *(DataArray + 3));
 }

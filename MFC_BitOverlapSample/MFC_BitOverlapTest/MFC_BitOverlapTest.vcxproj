@@ -93,11 +93,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UTEST</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>E:\development\googletest\googletest-master\googletest\include;$(SolutionDir)MFC_BitOverlapSample;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <AdditionalOptions>-D_UTEST %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,11 +114,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_UTEST</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>E:\development\googletest\googletest-master\googletest\include;$(SolutionDir)MFC_BitOverlapSample;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <AdditionalOptions>-D_UTEST %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,6 +172,10 @@
     <ClCompile Include="CCheckOffsetOverlap_UTest.cpp" />
     <ClCompile Include="CDataOffset_UTest.cpp" />
     <ClCompile Include="MFC_BitOverlapTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\MFC_BitOverlapSample\CCheckOffsetOverlap.h" />
+    <ClInclude Include="..\MFC_BitOverlapSample\CDataOffset.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
