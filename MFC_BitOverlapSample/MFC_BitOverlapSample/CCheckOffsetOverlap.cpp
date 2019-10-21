@@ -97,7 +97,7 @@ BOOL CCheckOffsetOverlap::CheckOverlap(const CArray<CDataOffset>& DataToCheck)
  */
 BOOL CCheckOffsetOverlap::CheckOverlap(const CDataOffset& DataToCheck)
 {
-	DWORD BitData = CDataOffset::TypeBitArrayMap[DataToCheck.GetDataType()];
+	DWORD BitData = CDataOffset::TypeBitMaskMap[DataToCheck.GetDataType()];
 	if (CDataOffset::DataBitArray_32bit == BitData) {
 		return this->CheckOverlap<DWORD>(DataToCheck);
 	}
@@ -120,7 +120,7 @@ BOOL CCheckOffsetOverlap::CheckOverlap(const CDataOffset& DataToCheck)
 	INT_PTR DataOffset = DataToCheck.GetDataOffset();
 	T* Data = (T*)(&(this->m_DataArray[DataOffset]));
 	INT_PTR BitOffset = DataToCheck.GetBitOffset();
-	T BitArray = CDataOffset::TypeBitArrayMap[DataToCheck.GetDataType()];
+	T BitArray = CDataOffset::TypeBitMaskMap[DataToCheck.GetDataType()];
 	T BitData = BitArray << BitOffset;
 	BOOL CheckResult = FALSE;
 	if (0 == ((*Data) & BitData)) {

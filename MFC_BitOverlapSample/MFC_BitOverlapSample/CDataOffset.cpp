@@ -2,7 +2,7 @@
 #include "CDataOffset.h"
 #include <regex>
 
-CMap<INT_PTR, INT_PTR, UINT32, UINT32> CDataOffset::TypeBitArrayMap;
+CMap<INT_PTR, INT_PTR, UINT32, UINT32> CDataOffset::TypeBitMaskMap;
 CMap<INT_PTR, INT_PTR, INT_PTR, INT_PTR> CDataOffset::TypeBitSizeMap;
 CMap<INT_PTR, INT_PTR, INT_PTR, INT_PTR> CDataOffset::TypeDataSizeMap;
 BOOL CDataOffset::IsInit = FALSE;
@@ -10,13 +10,17 @@ BOOL CDataOffset::IsInit = FALSE;
 CDataOffset::CDataOffset()
 	: m_DataType(CDATA_OFFSET_DATA_TYPE_BOOL)
 	, m_DataName(_T(""))
-	, m_DataSize(DataSize_01bit)
-	, m_BitArray(DataBitArray_01bit)
 	, m_DataOffset(0)
 	, m_BitOffset(0)
 {
 	CDataOffset::InitMap();
 }
+
+CDataOffset::CDataOffset(int DataType, INT_PTR DataOffset, INT_PTR BitOffset)
+	: m_DataType(DataType)
+	, m_DataOffset(DataOffset)
+	, m_BitOffset(BitOffset)
+{}
 
 /**
  *	データのサイズ、ビット配列を定義するマップを初期化する。
@@ -28,17 +32,17 @@ void CDataOffset::InitMap()
 		return;
 	}
 
-	TypeBitArrayMap.RemoveAll();
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_BOOL, DataBitArray_01bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_BYTE, DataBitArray_08bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_WORD, DataBitArray_16bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_DWORD, DataBitArray_32bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_INT8, DataBitArray_08bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_INT16, DataBitArray_16bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_INT32, DataBitArray_32bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_UINT8, DataBitArray_08bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_UINT16, DataBitArray_16bit);
-	TypeBitArrayMap.SetAt(CDATA_OFFSET_DATA_TYPE_UINT32, DataBitArray_32bit);
+	TypeBitMaskMap.RemoveAll();
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_BOOL, DataBitArray_01bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_BYTE, DataBitArray_08bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_WORD, DataBitArray_16bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_DWORD, DataBitArray_32bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_INT8, DataBitArray_08bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_INT16, DataBitArray_16bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_INT32, DataBitArray_32bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_UINT8, DataBitArray_08bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_UINT16, DataBitArray_16bit);
+	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_UINT32, DataBitArray_32bit);
 
 	TypeBitSizeMap.RemoveAll();
 	TypeBitSizeMap.SetAt(CDATA_OFFSET_DATA_TYPE_BOOL, DataSize_01bit);
@@ -68,19 +72,6 @@ void CDataOffset::InitMap()
 }
 
 /**
- *	データの型を設定する。
- *
- *	@param	DataType	データの型に対応するID
- */
-void CDataOffset::SetDataType(INT_PTR DataType)
-{
-	this->m_DataType = DataType;
-
-	this->m_DataSize = TypeBitSizeMap[this->m_DataType];
-	this->m_BitArray = TypeBitArrayMap[this->m_DataType];
-}
-
-/**
  *	データのビット位置情報をセットする。
  *
  *	@param	BitOffset	オフセット情報の文字列
@@ -99,16 +90,25 @@ void CDataOffset::SetOffset(CString BitOffset)
 	}
 
 	INT_PTR TokenIndex = BitOffset.Find(_T('.'));
-	this->m_DataOffset = this->ExtractOffset(BitOffset, 0, TokenIndex, CDATA_OFFSET_BASE_DECIMAL);	//データのインデックスは、10進数表記
-	this->m_BitOffset = this->ExtractOffset(
-		BitOffset, TokenIndex + 1, BitOffset.GetLength() - TokenIndex, CDATA_OFFSET_BASE_HEX_DECIMAL);	//データのインデックスは、10進数表記
+	INT_PTR DataOffsetTmp = this->ExtractOffset(BitOffset, 
+		0, 
+		TokenIndex, 
+		CDATA_OFFSET_BASE_DECIMAL);	//データのインデックスは、10進数表記
+	INT_PTR BitOffsetTmp = this->ExtractOffset(BitOffset, 
+		TokenIndex + 1, 
+		BitOffset.GetLength() - TokenIndex, 
+		CDATA_OFFSET_BASE_HEX_DECIMAL);	//データのインデックスは、10進数表記
 
 	INT_PTR BitSize = TypeBitSizeMap[this->m_DataType];
-	INT_PTR DataSize = this->m_BitOffset + BitSize;
-	if (this->m_DataSize < DataSize) {
+	INT_PTR DataSize =  BitOffsetTmp +BitSize;
+	if (this->GetDataSize() < DataSize) {
 		//@ToDo:例外を投げる
 		TRACE(_T("Bit offset error!\r\n"));
+		return;
 	}
+
+	this->m_DataOffset = DataOffsetTmp;
+	this->m_BitOffset = BitOffsetTmp;
 }
 
 /**

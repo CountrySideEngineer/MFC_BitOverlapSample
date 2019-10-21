@@ -8,7 +8,6 @@ public:
 	virtual ~CCheckOffsetOverlap();
 	virtual BOOL RunCheck(const CArray<CDataOffset>& DataToCheck);
 
-
 protected:
 	virtual INT_PTR	GetDataSize(const CArray<CDataOffset>& DataToCheck);
 	virtual void AllocData(const INT_PTR DataSize);
