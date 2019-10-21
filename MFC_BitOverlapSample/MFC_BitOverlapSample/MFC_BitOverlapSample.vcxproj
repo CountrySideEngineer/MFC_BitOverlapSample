@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -45,7 +45,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -187,6 +187,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCheckOffsetOverlap.h" />
+    <ClInclude Include="CDataOffset.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFC_BitOverlapSample.h" />
     <ClInclude Include="MFC_BitOverlapSampleDlg.h" />
@@ -195,6 +197,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCheckOffsetOverlap.cpp" />
+    <ClCompile Include="CDataOffset.cpp" />
     <ClCompile Include="MFC_BitOverlapSample.cpp" />
     <ClCompile Include="MFC_BitOverlapSampleDlg.cpp" />
     <ClCompile Include="pch.cpp">
