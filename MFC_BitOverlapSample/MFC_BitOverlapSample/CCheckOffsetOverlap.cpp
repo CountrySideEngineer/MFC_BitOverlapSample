@@ -6,6 +6,7 @@
  */
 CCheckOffsetOverlap::CCheckOffsetOverlap()
 	: m_DataArray(NULL)
+	, m_DataArraySize(0)
 {}
 
 /**
@@ -62,8 +63,17 @@ INT_PTR CCheckOffsetOverlap::GetDataSize(const CArray<CDataOffset>& DataToCheck)
  */
 void CCheckOffsetOverlap::AllocData(const INT_PTR DataSize)
 {
-	this->m_DataArray = new WORD[DataSize];
-	for (INT_PTR Index = 0; Index < DataSize; Index++) {
+	this->m_DataArraySize = DataSize;
+	this->m_DataArray = new WORD[this->m_DataArraySize];
+	this->InitData();
+}
+
+/**
+ *	”z—ñ‚ğ‰Šú‰»‚·‚éB
+ */
+void CCheckOffsetOverlap::InitData()
+{
+	for (INT_PTR Index = 0; Index < this->m_DataArraySize; Index++) {
 		this->m_DataArray[Index] = 0;
 	}
 }
