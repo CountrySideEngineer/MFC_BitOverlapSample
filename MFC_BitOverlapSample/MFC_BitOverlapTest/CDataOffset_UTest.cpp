@@ -7,7 +7,6 @@ TEST(CDataOffset, Constructor_001)
 	CDataOffset TestData;
 
 	ASSERT_EQ(0, TestData.GetDataType());
-	ASSERT_STREQ(_T(""), TestData.GetDataName());
 	ASSERT_EQ(0, TestData.GetDataOffset());
 	ASSERT_EQ(0, TestData.GetBitOffset());
 	ASSERT_EQ(1, TestData.GetBitMask());

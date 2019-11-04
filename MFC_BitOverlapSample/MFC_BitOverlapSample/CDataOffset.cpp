@@ -2,6 +2,7 @@
 #include "CDataOffset.h"
 #include <regex>
 
+CMap<CString, LPCTSTR, INT_PTR, INT_PTR> CDataOffset::TypeDataMap;
 CMap<INT_PTR, INT_PTR, UINT32, UINT32> CDataOffset::TypeBitMaskMap;
 CMap<INT_PTR, INT_PTR, INT_PTR, INT_PTR> CDataOffset::TypeBitSizeMap;
 CMap<INT_PTR, INT_PTR, INT_PTR, INT_PTR> CDataOffset::TypeDataSizeMap;
@@ -9,7 +10,6 @@ BOOL CDataOffset::IsInit = FALSE;
 
 CDataOffset::CDataOffset()
 	: m_DataType(CDATA_OFFSET_DATA_TYPE_BOOL)
-	, m_DataName(_T(""))
 	, m_DataOffset(0)
 	, m_BitOffset(0)
 {
@@ -31,6 +31,18 @@ void CDataOffset::InitMap()
 		//初期化済み
 		return;
 	}
+
+	TypeDataMap.RemoveAll();
+	TypeDataMap.SetAt(_T("BOOL"), CDATA_OFFSET_DATA_TYPE_BOOL);
+	TypeDataMap.SetAt(_T("BYTE"), CDATA_OFFSET_DATA_TYPE_BYTE);
+	TypeDataMap.SetAt(_T("WORD"), CDATA_OFFSET_DATA_TYPE_WORD);
+	TypeDataMap.SetAt(_T("DWORD"), CDATA_OFFSET_DATA_TYPE_DWORD);
+	TypeDataMap.SetAt(_T("INT8"), CDATA_OFFSET_DATA_TYPE_INT8);
+	TypeDataMap.SetAt(_T("INT16"), CDATA_OFFSET_DATA_TYPE_INT16);
+	TypeDataMap.SetAt(_T("INT32"), CDATA_OFFSET_DATA_TYPE_INT32);
+	TypeDataMap.SetAt(_T("UINT8"), CDATA_OFFSET_DATA_TYPE_UINT8);
+	TypeDataMap.SetAt(_T("UINT16"), CDATA_OFFSET_DATA_TYPE_UINT16);
+	TypeDataMap.SetAt(_T("UINT32"), CDATA_OFFSET_DATA_TYPE_UINT32);
 
 	TypeBitMaskMap.RemoveAll();
 	TypeBitMaskMap.SetAt(CDATA_OFFSET_DATA_TYPE_BOOL, DataBitArray_01bit);
@@ -71,6 +83,12 @@ void CDataOffset::InitMap()
 	CDataOffset::IsInit = TRUE;
 }
 
+void CDataOffset::SetDataType(CString DataType)
+{
+	this->m_DataType = CDataOffset::TypeDataMap[DataType];
+}
+
+
 /**
  *	データのビット位置情報をセットする。
  *
@@ -97,10 +115,10 @@ void CDataOffset::SetOffset(CString BitOffset)
 	INT_PTR BitOffsetTmp = this->ExtractOffset(BitOffset, 
 		TokenIndex + 1, 
 		BitOffset.GetLength() - TokenIndex, 
-		CDATA_OFFSET_BASE_HEX_DECIMAL);	//データのインデックスは、10進数表記
+		CDATA_OFFSET_BASE_HEX_DECIMAL);	//データのインデックスは、16進数表記
 
 	INT_PTR BitSize = TypeBitSizeMap[this->m_DataType];
-	INT_PTR DataSize =  BitOffsetTmp +BitSize;
+	INT_PTR DataSize =  BitOffsetTmp + BitSize;
 	if (this->GetDataSize() < DataSize) {
 		//@ToDo:例外を投げる
 		TRACE(_T("Bit offset error!\r\n"));
