@@ -42,8 +42,7 @@ public:
 
 	virtual INT_PTR GetDataType() const { return this->m_DataType; }
 	virtual void SetDataType(INT_PTR DataType) { this->m_DataType = DataType; }
-	virtual CString GetDataName() const { return this->m_DataName; }
-	virtual void SetDataName(CString DataName) { this->m_DataName = DataName; }
+	virtual void SetDataType(CString DataType);
 	virtual INT_PTR GetDataOffset() const { return this->m_DataOffset; }
 	virtual void SetDataOffset(INT_PTR DataOffset) { this->m_DataOffset = DataOffset; }
 	virtual INT_PTR GetBitOffset() const { return this->m_BitOffset; }
@@ -62,11 +61,11 @@ protected:
 
 protected:
 	INT_PTR m_DataType;
-	CString m_DataName;
 	INT_PTR m_DataOffset;
 	INT_PTR m_BitOffset;
 
 public:
+	static CMap<CString, LPCTSTR, INT_PTR, INT_PTR> TypeDataMap;
 	static CMap<INT_PTR, INT_PTR, INT_PTR, INT_PTR> TypeDataSizeMap;
 	static CMap<INT_PTR, INT_PTR, UINT32, UINT32> TypeBitMaskMap;
 	static CMap<INT_PTR, INT_PTR, INT_PTR, INT_PTR> TypeBitSizeMap;

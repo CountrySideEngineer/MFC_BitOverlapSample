@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CCheckOffsetOverlap.h" />
+    <ClInclude Include="CCheckOffsetOverlapItem.h" />
     <ClInclude Include="CDataOffset.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFC_BitOverlapSample.h" />
@@ -198,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCheckOffsetOverlap.cpp" />
+    <ClCompile Include="CCheckOffsetOverlapItem.cpp" />
     <ClCompile Include="CDataOffset.cpp" />
     <ClCompile Include="MFC_BitOverlapSample.cpp" />
     <ClCompile Include="MFC_BitOverlapSampleDlg.cpp" />
