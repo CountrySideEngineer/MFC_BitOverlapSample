@@ -120,6 +120,9 @@ void CEditNewDataDlg::OnBnClickedButtonOk()
  */
 void CEditNewDataDlg::OnBnClickedButtonCancel() { this->OnCancel(); }
 
+/**
+ *	入力内容をモデルに反映する。
+ */
 void CEditNewDataDlg::UpdateDataType()
 {
 	ASSERT(NULL != this->m_DataTypeBuff);
