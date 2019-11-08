@@ -7,8 +7,12 @@
 #include "MFC_BitOverlapSample.h"
 #include "MFC_BitOverlapSampleDlg.h"
 #include "afxdialogex.h"
+#include "CDataType.h"
+#include "CDataTypeInfo.h"
 #include "CDataOffset.h"
 #include "CCheckOffsetOverlap.h"
+#include "CEditNewDataDlg.h"
+#include "CUtility.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,17 +27,27 @@ CMFCBitOverlapSampleDlg::CMFCBitOverlapSampleDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MFC_BITOVERLAPSAMPLE_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	this->m_DataTypeCollection.RemoveAll();
+}
+
+CMFCBitOverlapSampleDlg::~CMFCBitOverlapSampleDlg()
+{
+	CUtility Util;
+	Util.Release(&(this->m_DataTypeCollection));
 }
 
 void CMFCBitOverlapSampleDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST2, m_DataTypeListView);
 }
 
 BEGIN_MESSAGE_MAP(CMFCBitOverlapSampleDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_RUN_CHECK, &CMFCBitOverlapSampleDlg::OnBnClickedButtonRunCheck)
+	ON_BN_CLICKED(IDC_BUTTON_ADD_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem)
 END_MESSAGE_MAP()
 
 
@@ -49,6 +63,10 @@ BOOL CMFCBitOverlapSampleDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 小さいアイコンの設定
 
 	// TODO: 初期化をここに追加します。
+	if (FALSE == this->SetupTable()) {
+		return FALSE;
+	}
+	this->UpdateTable();
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -91,48 +109,105 @@ HCURSOR CMFCBitOverlapSampleDlg::OnQueryDragIcon()
 
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonRunCheck()
 {
-	CDataOffset DataOffset1;
-	DataOffset1.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BOOL);
-	DataOffset1.SetOffset(_T("0.0"));
-	DataOffset1.SetOffset(_T(".0"));
-	DataOffset1.SetOffset(_T("0."));
-	DataOffset1.SetOffset(_T("0.00"));
-	DataOffset1.SetOffset(_T("0.0.0"));
-	DataOffset1.SetOffset(_T("0.9"));
-	DataOffset1.SetOffset(_T("0.A"));
-	DataOffset1.SetOffset(_T("0.F"));
-	DataOffset1.SetOffset(_T("0.G"));
-	DataOffset1.SetOffset(_T("10.F"));
-	CDataOffset DataOffset2;
-	DataOffset2.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BOOL);
-	DataOffset2.SetOffset(_T("0.1"));
-	CDataOffset DataOffset3;
-	DataOffset3.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BOOL);
-	DataOffset3.SetOffset(_T("0.2"));
-	CDataOffset DataOffset4;
-	DataOffset4.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_BYTE);
-	DataOffset4.SetOffset(_T("3.3"));
-	CDataOffset DataOffset5;
-	DataOffset5.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_WORD);
-	DataOffset5.SetOffset(_T("10.0"));
-	CDataOffset DataOffset6;
-	DataOffset6.SetDataType(CDataOffset::CDATA_OFFSET_DATA_TYPE_DWORD);
-	DataOffset6.SetOffset(_T("9.8"));
-	CArray<CDataOffset> DataToCheck;
-	DataToCheck.Add(DataOffset4);
-	DataToCheck.Add(DataOffset5);
-	DataToCheck.Add(DataOffset6);
-	DataToCheck.Add(DataOffset1);
-	DataToCheck.Add(DataOffset2);
-	DataToCheck.Add(DataOffset3);
+}
 
-	CCheckOffsetOverlap CheckOffsetOverlap;
+/**
+ *	画面に表示するテーブルの設定を行う。
+ */
+BOOL CMFCBitOverlapSampleDlg::SetupTable()
+{
+	return this->SetupDataTypeTable();
+}
 
-	BOOL bCheckResult = CheckOffsetOverlap.RunCheck(DataToCheck);
-	if (TRUE == bCheckResult) {
-		AfxMessageBox(_T("重複なし"), MB_OK);
+/**
+ *	データタイプテーブルの設定を行う。
+ */
+BOOL CMFCBitOverlapSampleDlg::SetupDataTypeTable()
+{
+	//常に行選択で表示する。
+	this->m_DataTypeListView.SetExtendedStyle(this->m_DataTypeListView.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
+
+	//列のヘッダーを設定する。
+	CString ColHeader_No = _T("");
+	CString ColHeader_DataType = _T("");
+	CString ColHeader_Name = _T("");
+	CString ColHeader_Offset = _T("");
+	CString ColHeader_Remarks = _T("");
+	if ((0 == ColHeader_No.LoadString(IDS_STRING_DATA_TYPE_TABLE_COL_TITLE_NO)) ||
+		(0 == ColHeader_DataType.LoadString(IDS_STRING_DATA_TYPE_TABLE_COL_TITLE_DATA_TYPE)) ||
+		(0 == ColHeader_Name.LoadString(IDS_STRING_DATA_TYPE_TABLE_COL_TITLE_NAME)) ||
+		(0 == ColHeader_Offset.LoadString(IDS_STRING_DATA_TYPE_TABLE_COL_TITLE_OFFSET)) ||
+		(0 == ColHeader_Remarks.LoadString(IDS_STRING_DATA_TYPE_TABLE_COL_TITLE_REMARKS)))
+	{
+		//初期化中にエラー発生→その場で終了！
+		CString DataTypeLoadError = _T("");
+		if (0 == DataTypeLoadError.LoadString(IDS_STRING_ERROR_WHILE_INIT)) {
+			//読み込みエラー：何も表示しない
+		}
+		AfxMessageBox(DataTypeLoadError, MB_OK | MB_ICONSTOP);
+		return FALSE;
+
+	}
+
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_NO, ColHeader_No, LVCFMT_CENTER, 100);
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_DATA_TYPE, ColHeader_DataType, LVCFMT_CENTER, 100);
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_NAME, ColHeader_Name, LVCFMT_CENTER, 100);
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_OFFSET, ColHeader_Offset, LVCFMT_CENTER, 100);
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_REMARKS, ColHeader_Remarks, LVCFMT_CENTER, 100);
+	return TRUE;
+}
+
+/**
+ *	追加ボタンのイベントハンドラ
+ */
+void CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem()
+{
+	this->OpenEditDataTypeDlg();
+}
+
+/**
+ *	データ追加用のダイアログを開く。
+ */
+void CMFCBitOverlapSampleDlg::OpenEditDataTypeDlg()
+{
+	CDataType NewDataType;
+	CEditNewDataDlg EditNewItemDlg(this);
+	EditNewItemDlg.SetDataTypeStore(&NewDataType);
+	INT_PTR EditResult = EditNewItemDlg.DoModal();
+	if (IDOK == EditResult) {
+		this->AddNewDataType(&NewDataType);
+		this->UpdateTable();
 	}
 	else {
-		AfxMessageBox(_T("重複あり"), MB_OK);
+		//OK以外(キャンセル)を選択→何もしない
+	}
+}
+
+/**
+ *	新しいアイテムを追加する。
+ */
+void CMFCBitOverlapSampleDlg::AddNewDataType(CDataType* Src)
+{
+	ASSERT(NULL != Src);
+
+	this->m_DataTypeCollection.Add(new CDataType(Src));
+}
+
+void CMFCBitOverlapSampleDlg::UpdateTable()
+{
+	this->m_DataTypeListView.DeleteAllItems();	//一度、全ての内容を破棄する。
+
+	CDataTypeInfo* Instance = CDataTypeInfo::GetInstance();
+	for (INT_PTR RowIndex = 0; RowIndex < this->m_DataTypeCollection.GetCount(); RowIndex++) {
+		CDataType* DataType = this->m_DataTypeCollection.GetAt(RowIndex);
+		CUtility Util;
+		CString Offset = Util.SetupOffset(DataType->GetDataOffset(), DataType->GetBitOffset());
+
+		this->m_DataTypeListView.InsertItem(RowIndex, _T(""));
+		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_DATA_TYPE, Instance->GetTypeName(DataType->GetDataTypeId()));
+		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_NAME, DataType->GetDataDesc());
+		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_REMARKS, DataType->GetRemarks());
+		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_OFFSET, Offset);
+
 	}
 }

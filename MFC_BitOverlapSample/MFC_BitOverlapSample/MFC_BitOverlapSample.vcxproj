@@ -190,6 +190,12 @@
     <ClInclude Include="CCheckOffsetOverlap.h" />
     <ClInclude Include="CCheckOffsetOverlapItem.h" />
     <ClInclude Include="CDataOffset.h" />
+    <ClInclude Include="CDataType.h" />
+    <ClInclude Include="CDataTypeInfo.h" />
+    <ClInclude Include="CEditNewDataDlg.h" />
+    <ClInclude Include="COffsetEdit.h" />
+    <ClInclude Include="CRegex.h" />
+    <ClInclude Include="CUtility.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFC_BitOverlapSample.h" />
     <ClInclude Include="MFC_BitOverlapSampleDlg.h" />
@@ -201,6 +207,12 @@
     <ClCompile Include="CCheckOffsetOverlap.cpp" />
     <ClCompile Include="CCheckOffsetOverlapItem.cpp" />
     <ClCompile Include="CDataOffset.cpp" />
+    <ClCompile Include="CDataType.cpp" />
+    <ClCompile Include="CDataTypeInfo.cpp" />
+    <ClCompile Include="CEditNewDataDlg.cpp" />
+    <ClCompile Include="COffsetEdit.cpp" />
+    <ClCompile Include="CRegex.cpp" />
+    <ClCompile Include="CUtility.cpp" />
     <ClCompile Include="MFC_BitOverlapSample.cpp" />
     <ClCompile Include="MFC_BitOverlapSampleDlg.cpp" />
     <ClCompile Include="pch.cpp">
