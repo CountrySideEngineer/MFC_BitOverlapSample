@@ -7,6 +7,7 @@
 #include "MFC_BitOverlapSample.h"
 #include "MFC_BitOverlapSampleDlg.h"
 #include "afxdialogex.h"
+#include "resource.h"
 #include "CDataType.h"
 #include "CDataTypeInfo.h"
 #include "CDataOffset.h"
@@ -249,6 +250,18 @@ void CMFCBitOverlapSampleDlg::DeleteDataTypeInfo()
 void CMFCBitOverlapSampleDlg::EditDataTypeInfo()
 {
 	INT_PTR CurSel = this->m_DataTypeListView.GetNextItem(-1, LVNI_SELECTED);
+	if (CurSel < 0) {
+		/*
+		 *	アイテムが選択されていない場合は、削除処理を実施しない。
+		 *	代替処理として、エラーメッセージを表示する。
+		 */
+		CString ErrMessage = _T("");
+		if (0 == ErrMessage.LoadString(IDS_STRING_ERROR_EDIT_NO_ROW_SELECTED)) {
+			ErrMessage.LoadString(IDS_STRING_ERROR_WHILE_LOAD_STRING_TABLE);
+		}
+		AfxMessageBox(ErrMessage, MB_OK | MB_ICONSTOP);
+		return;
+	}
 	CDataType* CurDataType = this->m_DataTypeCollection.GetAt(CurSel);
 	CEditDataTypeCommand* Command = new CEditDataTypeCommand();
 	Command->SetReceiver(CurDataType);
