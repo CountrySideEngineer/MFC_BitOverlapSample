@@ -18,7 +18,7 @@ CEditNewDataDlg::CEditNewDataDlg(CWnd* pParent /*=nullptr*/)
 {
 	this->m_DataName = _T("");
 	this->m_DataDesc = _T("");
-	this->m_Offset = _T("");
+	this->m_Offset = _T("0.0");
 	this->m_DataType = 0;
 	this->m_DataTypeBuff = NULL;
 }
@@ -58,7 +58,6 @@ BOOL CEditNewDataDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 大きいアイコンの設定
 	SetIcon(m_hIcon, FALSE);		// 小さいアイコンの設定
 
-	// TODO: 初期化をここに追加します。
 	//コンボボックスの設定
 	CDataTypeInfo* Instance = CDataTypeInfo::GetInstance();
 	for (INT_PTR Index = 0; Index < CDataTypeInfo::DATA_TYPE_INFO_NAME_MAX; Index++) {
@@ -75,6 +74,8 @@ BOOL CEditNewDataDlg::OnInitDialog()
 	ComboBoxRect.bottom = ComboBoxRect.top + 500;	//500：テキトー値
 	this->m_DataTypeComboBox.MoveWindow(&ComboBoxRect);
 
+	this->UpdateData(FALSE);	//各コントロールに初期値を設定する。
+
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 
@@ -90,7 +91,12 @@ BOOL CEditNewDataDlg::PreTranslateMessage(MSG* pMsg)
 				this->m_OffsetEdit.SendMessage(WM_KILLFOCUS);
 				return TRUE;
 			}
-			else {
+			else if ((&(this->m_DataNameEdit)) == this->GetFocus()) {
+				this->m_DataNameEdit.SendMessage(WM_KILLFOCUS);
+				return TRUE;
+			}
+			else
+			{
 				return CDialogEx::PreTranslateMessage(pMsg);
 			}
 		}
@@ -141,3 +147,22 @@ void CEditNewDataDlg::UpdateDataType()
 	this->m_DataTypeBuff->SetBitOffset(BitOffset);
 }
 
+/**
+ *	画面に表示するデータ型情報を設定する。
+ *
+ *	@param[in,out]	DataTypeBuff	画面に表示/編集するデータ型情報へのポインタ
+ */
+void CEditNewDataDlg::SetDataType(CDataType* DataTypeBuff)
+{
+	ASSERT(NULL != DataTypeBuff);
+
+	this->m_DataTypeBuff = DataTypeBuff;
+
+	this->m_DataType = this->m_DataTypeBuff->GetDataTypeId();
+	this->m_DataName = this->m_DataTypeBuff->GetDataDesc();
+	this->m_DataDesc = this->m_DataTypeBuff->GetRemarks();
+
+	CUtility Util;
+	this->m_Offset = Util.SetupOffset(
+		this->m_DataTypeBuff->GetDataOffset(), this->m_DataTypeBuff->GetBitOffset());
+}

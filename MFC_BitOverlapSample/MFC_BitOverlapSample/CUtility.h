@@ -8,6 +8,7 @@ protected:
 	};
 public:
 	template <class T> void Release(CArray<T*>* Target);
+	template <class T> void Release(T** Target);
 	virtual void ExtractOffset(CString OffsetString, INT_PTR& DataOffset, INT_PTR& BitOffset);
 	virtual CString SetupOffset(const INT_PTR DataOffset, const INT_PTR BitOffset);
 
@@ -29,9 +30,23 @@ void CUtility::Release(CArray<T*>* Target)
 	for (INT_PTR Index = 0; Index < Target->GetCount(); Index++) {
 		T* TargetItem = Target->GetAt(Index);
 		if (NULL != TargetItem) {
-			delete TargetItem;
-			TargetItem = NULL;
+			this->Release(&TargetItem);
 		}
 	}
 	Target->RemoveAll();
+}
+
+/**
+ *	オブジェクトを解放する。
+ *
+ *	@param[in,out]	Target	解放したい領域へのポインタへのポインタ
+ */
+template <class T>
+void CUtility::Release(T** Target)
+{
+	ASSERT(NULL != Target);
+	ASSERT(NULL != *Target);
+
+	delete *Target;
+	*Target = NULL;
 }

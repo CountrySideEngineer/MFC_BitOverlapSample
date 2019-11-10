@@ -17,9 +17,9 @@
 #define IDC_COMBO_DATA_TYPE             1004
 #define IDC_BUTTON_CHECK_ITEM           1005
 #define IDC_EDIT_DATA_OFFSET            1005
-#define IDC_BUTTON_CHECK_OVERLAP        1006
 #define IDC_BUTTON_EXPORT_DATA          1006
 #define IDC_EDIT_DATA_NAME              1007
+#define IDC_BUTTON_EDIT_DATA            1007
 #define IDC_EDIT_DATA_REMARK            1008
 #define IDC_BUTTON_OK                   1009
 #define IDC_BUTTON_CANCEL               1010

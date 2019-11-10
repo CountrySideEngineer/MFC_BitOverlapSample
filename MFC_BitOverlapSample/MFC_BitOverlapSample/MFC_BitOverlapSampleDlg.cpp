@@ -12,6 +12,9 @@
 #include "CDataOffset.h"
 #include "CCheckOffsetOverlap.h"
 #include "CEditNewDataDlg.h"
+#include "CAddDataTypeInfoCommand.h"
+#include "CDeleteDataTypeInfoCommand.h"
+#include "CEditDataTypeCommand.h"
 #include "CUtility.h"
 
 #ifdef _DEBUG
@@ -41,6 +44,11 @@ void CMFCBitOverlapSampleDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST2, m_DataTypeListView);
+	DDX_Control(pDX, IDC_BUTTON_ADD_ITEM, m_AddItemButton);
+	DDX_Control(pDX, IDC_BUTTON_DELETE_ITEM, m_DeleteItemButton);
+	DDX_Control(pDX, IDC_BUTTON_CHECK_ITEM, m_ValidateItemButton);
+	DDX_Control(pDX, IDC_BUTTON_EXPORT_DATA, m_ExportDataInfoButton);
+	DDX_Control(pDX, IDC_BUTTON_EDIT_DATA, m_EditDataButton);
 }
 
 BEGIN_MESSAGE_MAP(CMFCBitOverlapSampleDlg, CDialogEx)
@@ -48,6 +56,8 @@ BEGIN_MESSAGE_MAP(CMFCBitOverlapSampleDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_RUN_CHECK, &CMFCBitOverlapSampleDlg::OnBnClickedButtonRunCheck)
 	ON_BN_CLICKED(IDC_BUTTON_ADD_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem)
+	ON_BN_CLICKED(IDC_BUTTON_DELETE_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonDeleteItem)
+	ON_BN_CLICKED(IDC_BUTTON_EDIT_DATA, &CMFCBitOverlapSampleDlg::OnBnClickedButtonEditData)
 END_MESSAGE_MAP()
 
 
@@ -66,7 +76,8 @@ BOOL CMFCBitOverlapSampleDlg::OnInitDialog()
 	if (FALSE == this->SetupTable()) {
 		return FALSE;
 	}
-	this->UpdateTable();
+
+	this->UpdteView();
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -149,11 +160,26 @@ BOOL CMFCBitOverlapSampleDlg::SetupDataTypeTable()
 
 	}
 
-	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_NO, ColHeader_No, LVCFMT_CENTER, 100);
-	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_DATA_TYPE, ColHeader_DataType, LVCFMT_CENTER, 100);
-	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_NAME, ColHeader_Name, LVCFMT_CENTER, 100);
-	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_OFFSET, ColHeader_Offset, LVCFMT_CENTER, 100);
-	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_REMARKS, ColHeader_Remarks, LVCFMT_CENTER, 100);
+	this->m_DataTypeListView.InsertColumn(1, ColHeader_No, LVCFMT_RIGHT, 100);	//No.
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_DATA_TYPE, ColHeader_DataType, LVCFMT_CENTER, 100);	//データ型名
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_NAME, ColHeader_Name, LVCFMT_LEFT, 100);	//データ型の説明
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_OFFSET, ColHeader_Offset, LVCFMT_RIGHT, 100);	//オフセット
+	this->m_DataTypeListView.InsertColumn(DATA_TYPE_TABLE_COL_INDEX_REMARKS, ColHeader_Remarks, LVCFMT_LEFT, 100);	//備考
+	/*
+	 *	各列のヘッダーを中央寄せ、各列の要素はそれぞれに設定したい。
+	 *	そのため、ヘッダーのみ設定を変更する。
+	 *		→	検討の結果、実現できないことが判明。
+	 *			検討の結果は下記(アプリケーションとしては不要なコードだが、検討結果として残しておく)。
+	 */
+	//for (INT_PTR Index = DATA_TYPE_TABLE_COL_INDEX_NO; Index < DATA_TYPE_TABLE_COL_INDEX_MAX; Index++) {
+	//	HDITEM HeaderItem;
+	//	CHeaderCtrl* HeaderCtrl = this->m_DataTypeListView.GetHeaderCtrl();
+	//	HeaderCtrl->GetItem(Index, &HeaderItem);
+	//	HeaderItem.mask |= HDI_FORMAT;
+	//	HeaderItem.fmt &= ~HDF_JUSTIFYMASK;
+	//	HeaderItem.fmt |= HDF_CENTER;
+	//	HeaderCtrl->SetItem(Index, &HeaderItem);
+	//}
 	return TRUE;
 }
 
@@ -162,37 +188,81 @@ BOOL CMFCBitOverlapSampleDlg::SetupDataTypeTable()
  */
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem()
 {
-	this->OpenEditDataTypeDlg();
+	this->EditNewDataTypeInfo();
+	this->UpdteView();
 }
 
 /**
- *	データ追加用のダイアログを開く。
+ *	削除ボタンのイベントハンドラ
  */
-void CMFCBitOverlapSampleDlg::OpenEditDataTypeDlg()
+void CMFCBitOverlapSampleDlg::OnBnClickedButtonDeleteItem()
 {
-	CDataType NewDataType;
-	CEditNewDataDlg EditNewItemDlg(this);
-	EditNewItemDlg.SetDataTypeStore(&NewDataType);
-	INT_PTR EditResult = EditNewItemDlg.DoModal();
-	if (IDOK == EditResult) {
-		this->AddNewDataType(&NewDataType);
-		this->UpdateTable();
+	this->DeleteDataTypeInfo();
+	this->UpdteView();
+}
+
+/**
+ *	編集ボタンのイベントハンドラ
+ */
+void CMFCBitOverlapSampleDlg::OnBnClickedButtonEditData()
+{
+	this->EditDataTypeInfo();
+	this->UpdteView();
+}
+
+/**
+ *	新規データ型情報を追加する。
+ */
+void CMFCBitOverlapSampleDlg::EditNewDataTypeInfo()
+{
+	CAddDataTypeInfoCommand* Command = new CAddDataTypeInfoCommand();
+	Command->SetReceiver(&(this->m_DataTypeCollection));
+	this->RunCommand(Command);
+}
+
+/**
+ *	データ型処理を削除する。
+ */
+void CMFCBitOverlapSampleDlg::DeleteDataTypeInfo()
+{
+	INT_PTR CurSel = this->m_DataTypeListView.GetNextItem(-1, LVNI_SELECTED);
+	if (CurSel < 0) {
+		/*
+		 *	アイテムが選択されていない場合は、削除処理を実施しない。
+		 *	代替処理として、エラーメッセージを表示する。
+		 */
+		AfxMessageBox(_T("削除する行が選択されていません。"), MB_OK | MB_ICONSTOP);
+		return;
 	}
 	else {
-		//OK以外(キャンセル)を選択→何もしない
+		CDeleteDataTypeInfoCommand* Command = new CDeleteDataTypeInfoCommand();
+		Command->SetReceiver(&(this->m_DataTypeCollection));
+		Command->SetTargetIndex(CurSel);
+		this->RunCommand(Command);
 	}
 }
 
-/**
- *	新しいアイテムを追加する。
- */
-void CMFCBitOverlapSampleDlg::AddNewDataType(CDataType* Src)
+void CMFCBitOverlapSampleDlg::EditDataTypeInfo()
 {
-	ASSERT(NULL != Src);
-
-	this->m_DataTypeCollection.Add(new CDataType(Src));
+	INT_PTR CurSel = this->m_DataTypeListView.GetNextItem(-1, LVNI_SELECTED);
+	CDataType* CurDataType = this->m_DataTypeCollection.GetAt(CurSel);
+	CEditDataTypeCommand* Command = new CEditDataTypeCommand();
+	Command->SetReceiver(CurDataType);
+	this->RunCommand(Command);
 }
 
+/**
+ *	画面表示を更新する。
+ */
+void CMFCBitOverlapSampleDlg::UpdteView()
+{
+	this->UpdateTable();
+	this->UpdateButton();
+}
+
+/**
+ *	データ型テーブルの表示を更新する。
+ */
 void CMFCBitOverlapSampleDlg::UpdateTable()
 {
 	this->m_DataTypeListView.DeleteAllItems();	//一度、全ての内容を破棄する。
@@ -202,12 +272,57 @@ void CMFCBitOverlapSampleDlg::UpdateTable()
 		CDataType* DataType = this->m_DataTypeCollection.GetAt(RowIndex);
 		CUtility Util;
 		CString Offset = Util.SetupOffset(DataType->GetDataOffset(), DataType->GetBitOffset());
+		CString DataNo = _T("");
+		DataNo.Format(_T("%d"), (int)(RowIndex + 1));
 
 		this->m_DataTypeListView.InsertItem(RowIndex, _T(""));
+		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_NO, DataNo);
 		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_DATA_TYPE, Instance->GetTypeName(DataType->GetDataTypeId()));
 		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_NAME, DataType->GetDataDesc());
 		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_REMARKS, DataType->GetRemarks());
 		this->m_DataTypeListView.SetItemText(RowIndex, DATA_TYPE_TABLE_COL_INDEX_OFFSET, Offset);
+	}
+}
 
+/**
+ *	ボタンの有効/無効を変更する。
+ */
+void CMFCBitOverlapSampleDlg::UpdateButton()
+{
+	if (0 < this->m_DataTypeCollection.GetCount()) {
+		this->UpdateButton(TRUE);
+	}
+	else {
+		this->UpdateButton(FALSE);
+	}
+}
+
+/**
+ *	画面のボタンの有効/無効を、引数での指定に従って切り替える。
+ *
+ *	@param	IsEnable	ボタンの有効/無効の設定値
+ *						TRUEを設定した場合には有効に、FALSEを設定した場合には無効に設定される。
+ */
+void CMFCBitOverlapSampleDlg::UpdateButton(BOOL IsEnable)
+{
+	this->m_DeleteItemButton.EnableWindow(IsEnable);
+	this->m_ValidateItemButton.EnableWindow(IsEnable);
+	this->m_EditDataButton.EnableWindow(IsEnable);
+	this->m_ExportDataInfoButton.EnableWindow(IsEnable);
+}
+
+/**
+ *	指定されたコマンドを実行する。
+ *
+ *	@param[in]	Command	実行するコマンドクラスへのポインタ
+ *	@param	CommandName	実行するコマンド名
+ */
+void CMFCBitOverlapSampleDlg::RunCommand(ACommand* Command, CString CommandName)
+{
+	if (TRUE == this->m_CommandManager.ExecuteCommand(Command)) {
+		TRACE(_T("Command : OK (%s)\n"), CommandName);
+	}
+	else {
+		TRACE(_T("Command : NG (%s)\n"), CommandName);
 	}
 }

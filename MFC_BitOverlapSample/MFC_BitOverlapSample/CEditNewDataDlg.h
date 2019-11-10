@@ -12,6 +12,7 @@ public:
 	CEditNewDataDlg(CWnd* pParent = nullptr);   // 標準コンストラクター
 	virtual ~CEditNewDataDlg();
 
+	virtual void SetDataType(CDataType* DataTypeBuff);
 	virtual void SetDataTypeStore(CDataType* DataType) { this->m_DataTypeBuff = DataType; }
 
 // ダイアログ データ

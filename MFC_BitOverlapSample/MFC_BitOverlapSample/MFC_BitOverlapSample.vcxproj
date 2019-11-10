@@ -187,11 +187,16 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ACommand.h" />
+    <ClInclude Include="CAddDataTypeInfoCommand.h" />
     <ClInclude Include="CCheckOffsetOverlap.h" />
     <ClInclude Include="CCheckOffsetOverlapItem.h" />
+    <ClInclude Include="CBOSCommandManager.h" />
     <ClInclude Include="CDataOffset.h" />
     <ClInclude Include="CDataType.h" />
     <ClInclude Include="CDataTypeInfo.h" />
+    <ClInclude Include="CDeleteDataTypeInfoCommand.h" />
+    <ClInclude Include="CEditDataTypeCommand.h" />
     <ClInclude Include="CEditNewDataDlg.h" />
     <ClInclude Include="COffsetEdit.h" />
     <ClInclude Include="CRegex.h" />
@@ -204,11 +209,16 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ACommand.cpp" />
+    <ClCompile Include="CAddDataTypeInfoCommand.cpp" />
     <ClCompile Include="CCheckOffsetOverlap.cpp" />
     <ClCompile Include="CCheckOffsetOverlapItem.cpp" />
+    <ClCompile Include="CBOSCommandManager.cpp" />
     <ClCompile Include="CDataOffset.cpp" />
     <ClCompile Include="CDataType.cpp" />
     <ClCompile Include="CDataTypeInfo.cpp" />
+    <ClCompile Include="CDeleteDataTypeInfoCommand.cpp" />
+    <ClCompile Include="CEditDataTypeCommand.cpp" />
     <ClCompile Include="CEditNewDataDlg.cpp" />
     <ClCompile Include="COffsetEdit.cpp" />
     <ClCompile Include="CRegex.cpp" />

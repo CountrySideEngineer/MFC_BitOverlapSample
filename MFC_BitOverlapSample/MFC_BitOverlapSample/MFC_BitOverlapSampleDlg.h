@@ -4,6 +4,7 @@
 
 #pragma once
 #include "CDataType.h"
+#include "CBOSCommandManager.h"
 
 // CMFCBitOverlapSampleDlg ダイアログ
 class CMFCBitOverlapSampleDlg : public CDialogEx
@@ -37,21 +38,36 @@ protected:
 protected:
 	HICON m_hIcon;
 
+	virtual void RunCommand(ACommand* Command, CString CommandName = _T(""));
+
 	// 生成された、メッセージ割り当て関数
 	virtual BOOL OnInitDialog();
-	virtual void OpenEditDataTypeDlg();
-	virtual void AddNewDataType(CDataType* Src);
+	virtual void EditNewDataTypeInfo();
+	virtual void DeleteDataTypeInfo();
+	virtual void EditDataTypeInfo();
+	virtual void UpdteView();
 	virtual void UpdateTable();
-
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedButtonRunCheck();
-	afx_msg void OnBnClickedButtonAddItem();
+	virtual void UpdateButton();
+	virtual void UpdateButton(BOOL IsEnable);
 
 protected:
 	CArray<CDataType*> m_DataTypeCollection;
 
 	CListCtrl m_DataTypeListView;
+	CBOSCommandManager m_CommandManager;
+	CButton m_AddItemButton;
+	CButton m_DeleteItemButton;
+	CButton m_ValidateItemButton;
+	CButton m_ExportDataInfoButton;
+	CButton m_EditDataButton;
+
+public:
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+	DECLARE_MESSAGE_MAP()
+
+	afx_msg void OnBnClickedButtonRunCheck();
+	afx_msg void OnBnClickedButtonAddItem();
+	afx_msg void OnBnClickedButtonDeleteItem();
+	afx_msg void OnBnClickedButtonEditData();
 };
