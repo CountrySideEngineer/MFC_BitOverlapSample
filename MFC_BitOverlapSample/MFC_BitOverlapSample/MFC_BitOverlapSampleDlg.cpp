@@ -232,7 +232,9 @@ void CMFCBitOverlapSampleDlg::DeleteDataTypeInfo()
 		 *	代替処理として、エラーメッセージを表示する。
 		 */
 		CString ErrMessage = _T("");
-		ErrMessage.LoadString(IDS_STRING_ERROR_DEL_NO_ROW_SELECTED);
+		if (0 == ErrMessage.LoadString(IDS_STRING_ERROR_DEL_NO_ROW_SELECTED)) {
+			ErrMessage.LoadString(IDS_STRING_ERROR_WHILE_LOAD_STRING_TABLE);
+		}
 		AfxMessageBox(ErrMessage, MB_OK | MB_ICONSTOP);
 		return;
 	}
