@@ -231,7 +231,9 @@ void CMFCBitOverlapSampleDlg::DeleteDataTypeInfo()
 		 *	アイテムが選択されていない場合は、削除処理を実施しない。
 		 *	代替処理として、エラーメッセージを表示する。
 		 */
-		AfxMessageBox(_T("削除する行が選択されていません。"), MB_OK | MB_ICONSTOP);
+		CString ErrMessage = _T("");
+		ErrMessage.LoadString(IDS_STRING_ERROR_DEL_NO_ROW_SELECTED);
+		AfxMessageBox(ErrMessage, MB_OK | MB_ICONSTOP);
 		return;
 	}
 	else {

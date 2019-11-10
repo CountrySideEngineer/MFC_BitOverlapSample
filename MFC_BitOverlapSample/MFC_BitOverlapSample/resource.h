@@ -24,6 +24,8 @@
 #define IDC_BUTTON_OK                   1009
 #define IDC_BUTTON_CANCEL               1010
 #define IDS_STRING_ERROR_WHILE_INIT     10000
+#define IDS_STRING_ERROR_WHILE_INIT2    10001
+#define IDS_STRING_ERROR_DEL_NO_ROW_SELECTED 10001
 
 // Next default values for new objects
 // 
