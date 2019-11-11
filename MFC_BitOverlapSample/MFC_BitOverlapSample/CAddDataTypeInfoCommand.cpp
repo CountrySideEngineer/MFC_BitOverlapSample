@@ -6,19 +6,8 @@
  *	デフォルトコンストラクタ
  */
 CAddDataTypeInfoCommand::CAddDataTypeInfoCommand()
-	: m_DataType(NULL)
-	, m_Receiver(NULL)
+	: m_Receiver(NULL)
 {}
-
-/**
- *	追加したいデータ型情報
- */
-VOID CAddDataTypeInfoCommand::SetItem(CDataType* DataType)
-{
-	ASSERT(NULL != DataType);
-
-	this->m_DataType = DataType;
-}
 
 /**
  *	データの追加先へのポインタをセットする。
