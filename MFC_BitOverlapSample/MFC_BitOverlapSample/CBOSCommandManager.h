@@ -10,6 +10,8 @@ public:
 
 	virtual BOOL ExecuteCommand(ACommand* Command, BOOL DoesStack = TRUE);
 
+	virtual CList<ACommand*>* GetCommandStack() { return &(this->m_CommandStack); }
+
 protected:
 	CList<ACommand*> m_CommandStack;
 };

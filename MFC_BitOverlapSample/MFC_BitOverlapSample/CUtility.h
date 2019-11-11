@@ -1,4 +1,8 @@
 #pragma once
+#ifdef _UTEST
+#include <afxtempl.h>
+#endif
+
 class CUtility
 {
 protected:

@@ -36,6 +36,18 @@
     <ClCompile Include="..\MFC_BitOverlapSample\CCheckOffsetOverlapItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="CBOSCommandManager_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CBOSCommandManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CUtility.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CUtility_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\MFC_BitOverlapSample\CCheckOffsetOverlap.h">
@@ -43,9 +55,6 @@
     </ClInclude>
     <ClInclude Include="..\MFC_BitOverlapSample\CDataOffset.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="..\MFC_BitOverlapSample\CCheckOffsetOverlapItem.h">
-      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
