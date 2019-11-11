@@ -29,20 +29,14 @@ VOID CDeleteDataTypeInfoCommand::SetReceiver(CArray<CDataType*>* Receiver)
 BOOL CDeleteDataTypeInfoCommand::Execute()
 {
 	ASSERT(NULL != this->m_Receiver);
+	ASSERT(0 <= this->m_TargetIndex);
+	ASSERT(this->m_TargetIndex < this->m_Receiver->GetCount());
 
-	BOOL CommandResult = FALSE;
-	if (this->m_TargetIndex < this->m_Receiver->GetCount()) {
-		//指定されたデータが範囲内
-		CDataType* TargetItem = this->m_Receiver->GetAt(this->m_TargetIndex);
-		CUtility Util;
-		Util.Release(&TargetItem);
+	CDataType* TargetItem = this->m_Receiver->GetAt(this->m_TargetIndex);
+	CUtility Util;
+	Util.Release(&TargetItem);
 
-		this->m_Receiver->RemoveAt(this->m_TargetIndex);
+	this->m_Receiver->RemoveAt(this->m_TargetIndex);
 
-		CommandResult = TRUE;
-	}
-	else {
-		CommandResult = FALSE;
-	}
-	return CommandResult;
+	return TRUE;
 }

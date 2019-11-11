@@ -58,6 +58,8 @@ TEST(CBOSCommandManager, Execute_002)
 
 	ASSERT_FALSE(CommandManager.ExecuteCommand(Command));
 	ASSERT_EQ(0, CommandManager.GetCommandStack()->GetCount());
+
+	delete Command;
 }
 
 TEST(CBOSCommandManager, Execute_003)
@@ -68,6 +70,8 @@ TEST(CBOSCommandManager, Execute_003)
 
 	ASSERT_TRUE(CommandManager.ExecuteCommand(Command, FALSE));
 	ASSERT_EQ(0, CommandManager.GetCommandStack()->GetCount());
+
+	delete Command;
 }
 
 TEST(CBOSCommandManager, Execute_004)

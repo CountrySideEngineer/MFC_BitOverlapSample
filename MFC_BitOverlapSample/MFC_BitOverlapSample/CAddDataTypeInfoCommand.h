@@ -10,12 +10,14 @@ public:
 
 	virtual BOOL Execute();
 
+	virtual VOID SetDataType(CDataType* DataType);
 	virtual VOID SetReceiver(CArray<CDataType*>* Receiver);
 
 protected:
 	virtual BOOL AddNewDataType(CDataType* DataType);
 
 protected:
+	CDataType* m_DataType;
 	CArray<CDataType*>* m_Receiver;
 };
 

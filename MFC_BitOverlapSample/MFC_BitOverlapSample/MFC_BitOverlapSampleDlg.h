@@ -43,9 +43,12 @@ protected:
 	// 生成された、メッセージ割り当て関数
 	virtual BOOL OnInitDialog();
 	virtual void EditNewDataTypeInfo();
+	virtual void EditNewDataTypeInfo(CDataType* DataType);
 	virtual void DeleteDataTypeInfo();
+	virtual void DeleteDataTypeInfo(INT_PTR TargetDataIndex);
 	virtual void EditDataTypeInfo();
-	virtual void UpdteView();
+	virtual void EditDataTypeInfo(INT_PTR TargetDataIndex, CDataType* DataType);
+	virtual void UpdateView();
 	virtual void UpdateTable();
 	virtual void UpdateButton();
 	virtual void UpdateButton(BOOL IsEnable);

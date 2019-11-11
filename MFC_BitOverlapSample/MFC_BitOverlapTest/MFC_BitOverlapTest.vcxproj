@@ -179,7 +179,6 @@
     <ClCompile Include="CCheckOffsetOverlap_UTest.cpp" />
     <ClCompile Include="CDataOffset_UTest.cpp" />
     <ClCompile Include="CBOSCommandManager_UTest.cpp" />
-    <ClCompile Include="CEditNewDataDlg.cpp" />
     <ClCompile Include="CUtility_UTest.cpp" />
     <ClCompile Include="MFC_BitOverlapTest.cpp" />
   </ItemGroup>

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "CEditNewDataDlg.h"
 #include "CAddDataTypeInfoCommand.h"
 
 /**
@@ -7,7 +6,20 @@
  */
 CAddDataTypeInfoCommand::CAddDataTypeInfoCommand()
 	: m_Receiver(NULL)
+	, m_DataType(NULL)
 {}
+
+/**
+ *	追加するデータ型情報を含むオブジェクトへのポインタをセットする。
+ *
+ *	@param[in]	DataType	追加したいデータ型情報
+ */
+VOID CAddDataTypeInfoCommand::SetDataType(CDataType* DataType)
+{
+	ASSERT(NULL != DataType);
+
+	this->m_DataType = DataType;
+}
 
 /**
  *	データの追加先へのポインタをセットする。
@@ -28,17 +40,9 @@ VOID CAddDataTypeInfoCommand::SetReceiver(CArray<CDataType*>* Receiver)
 BOOL CAddDataTypeInfoCommand::Execute()
 {
 	ASSERT(NULL != this->m_Receiver);
+	ASSERT(NULL != this->m_DataType);
 
-	CDataType NewDataType;
-	CEditNewDataDlg EditDataDlg;
-	EditDataDlg.SetDataTypeStore(&NewDataType);
-	INT_PTR EditResult = EditDataDlg.DoModal();
-	if (IDOK == EditResult) {
-		return this->AddNewDataType(&NewDataType);
-	}
-	else {
-		return FALSE;
-	}
+	return this->AddNewDataType(this->m_DataType);
 }
 
 /**
@@ -48,6 +52,7 @@ BOOL CAddDataTypeInfoCommand::Execute()
  */
 BOOL CAddDataTypeInfoCommand::AddNewDataType(CDataType* DataType)
 {
+	ASSERT(NULL != this->m_Receiver);
 	ASSERT(NULL != DataType);
 
 	this->m_Receiver->Add(new CDataType(DataType));

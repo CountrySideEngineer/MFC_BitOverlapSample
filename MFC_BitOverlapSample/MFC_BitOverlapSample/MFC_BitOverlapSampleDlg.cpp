@@ -78,7 +78,7 @@ BOOL CMFCBitOverlapSampleDlg::OnInitDialog()
 		return FALSE;
 	}
 
-	this->UpdteView();
+	this->UpdateView();
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
@@ -190,7 +190,6 @@ BOOL CMFCBitOverlapSampleDlg::SetupDataTypeTable()
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem()
 {
 	this->EditNewDataTypeInfo();
-	this->UpdteView();
 }
 
 /**
@@ -199,7 +198,6 @@ void CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem()
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonDeleteItem()
 {
 	this->DeleteDataTypeInfo();
-	this->UpdteView();
 }
 
 /**
@@ -208,7 +206,6 @@ void CMFCBitOverlapSampleDlg::OnBnClickedButtonDeleteItem()
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonEditData()
 {
 	this->EditDataTypeInfo();
-	this->UpdteView();
 }
 
 /**
@@ -216,8 +213,30 @@ void CMFCBitOverlapSampleDlg::OnBnClickedButtonEditData()
  */
 void CMFCBitOverlapSampleDlg::EditNewDataTypeInfo()
 {
+	CDataType DataType;
+	CEditNewDataDlg EditNewDataDlg;
+	EditNewDataDlg.SetDataType(&DataType);
+	if (IDOK == EditNewDataDlg.DoModal()) {
+		this->EditNewDataTypeInfo(&DataType);
+		this->UpdateView();
+	}
+	else {
+		//OK以外が選択された場合には、何もしない。
+	}
+}
+
+/**
+ *	データの追加コマンドを実行する。
+ *
+ *	@param[in]	DataType	追加したいデータ型情報へのポインタ
+ */
+void CMFCBitOverlapSampleDlg::EditNewDataTypeInfo(CDataType* DataType)
+{
+	ASSERT(NULL != DataType);
+
 	CAddDataTypeInfoCommand* Command = new CAddDataTypeInfoCommand();
 	Command->SetReceiver(&(this->m_DataTypeCollection));
+	Command->SetDataType(DataType);
 	this->RunCommand(Command);
 }
 
@@ -240,13 +259,30 @@ void CMFCBitOverlapSampleDlg::DeleteDataTypeInfo()
 		return;
 	}
 	else {
-		CDeleteDataTypeInfoCommand* Command = new CDeleteDataTypeInfoCommand();
-		Command->SetReceiver(&(this->m_DataTypeCollection));
-		Command->SetTargetIndex(CurSel);
-		this->RunCommand(Command);
+		this->DeleteDataTypeInfo(CurSel);
+		this->UpdateView();
 	}
 }
 
+/**
+ *	データ型情報の削除を実施する。
+ *
+ *	@param	TargetDataIndex	削除するデータのインデックス
+ */
+void CMFCBitOverlapSampleDlg::DeleteDataTypeInfo(INT_PTR TargetDataIndex)
+{
+	ASSERT(0 <= TargetDataIndex);
+
+	CDeleteDataTypeInfoCommand* Command = new CDeleteDataTypeInfoCommand();
+	Command->SetReceiver(&(this->m_DataTypeCollection));
+	Command->SetTargetIndex(TargetDataIndex);
+	this->RunCommand(Command);
+}
+
+/**
+ *	既存のデータ型情報を編集する。
+ *	編集には、編集用画面を表示する。
+ */
 void CMFCBitOverlapSampleDlg::EditDataTypeInfo()
 {
 	INT_PTR CurSel = this->m_DataTypeListView.GetNextItem(-1, LVNI_SELECTED);
@@ -262,16 +298,41 @@ void CMFCBitOverlapSampleDlg::EditDataTypeInfo()
 		AfxMessageBox(ErrMessage, MB_OK | MB_ICONSTOP);
 		return;
 	}
-	CDataType* CurDataType = this->m_DataTypeCollection.GetAt(CurSel);
+	else {
+		CDataType* DataTypeToEditSrc = this->m_DataTypeCollection.GetAt(CurSel);
+		CDataType* DataTypeToEdit = new CDataType(DataTypeToEditSrc);
+		CEditNewDataDlg EditNewDataDlg;
+		EditNewDataDlg.SetDataType(DataTypeToEdit);
+		if (IDOK == EditNewDataDlg.DoModal()) {
+			this->EditDataTypeInfo(CurSel, DataTypeToEdit);
+			this->UpdateView();
+
+			CUtility Util;
+			Util.Release(&DataTypeToEdit);
+		}
+		else {
+			//OK以外が選択された場合には、何もしない。
+		}
+	}
+}
+
+void CMFCBitOverlapSampleDlg::EditDataTypeInfo(INT_PTR TargetDataIndex, CDataType* DataType)
+{
+	ASSERT(0 <= TargetDataIndex);
+	ASSERT(NULL != DataType);
+
 	CEditDataTypeCommand* Command = new CEditDataTypeCommand();
-	Command->SetReceiver(CurDataType);
+	Command->SetReceiver(&(this->m_DataTypeCollection));
+	Command->SetDataType(DataType);
+	Command->SetDataTypeIndex(TargetDataIndex);
 	this->RunCommand(Command);
 }
+
 
 /**
  *	画面表示を更新する。
  */
-void CMFCBitOverlapSampleDlg::UpdteView()
+void CMFCBitOverlapSampleDlg::UpdateView()
 {
 	this->UpdateTable();
 	this->UpdateButton();
