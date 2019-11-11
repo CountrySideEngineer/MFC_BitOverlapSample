@@ -11,6 +11,16 @@ CDeleteDataTypeInfoCommand::CDeleteDataTypeInfoCommand()
 {}
 
 /**
+ *
+ */
+VOID CDeleteDataTypeInfoCommand::SetTargetIndex(INT_PTR TargetIndex)
+{
+	ASSERT(0 <= TargetIndex);
+
+	this->m_TargetIndex = TargetIndex;
+}
+
+/**
  *	コマンドの処理対象をセットする。
  */
 VOID CDeleteDataTypeInfoCommand::SetReceiver(CArray<CDataType*>* Receiver)

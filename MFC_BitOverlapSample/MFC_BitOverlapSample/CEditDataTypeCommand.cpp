@@ -64,7 +64,7 @@ BOOL CEditDataTypeCommand::Execute()
 	CDataType* DataType = this->m_Receiver->GetAt(this->m_DataTypeIndex);
 	CUtility Util;
 	Util.Release(&DataType);
-
+	this->m_Receiver->RemoveAt(this->m_DataTypeIndex);
 	this->m_Receiver->InsertAt(this->m_DataTypeIndex, new CDataType(this->m_DataType));
 
 	return TRUE;

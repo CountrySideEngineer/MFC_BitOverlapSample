@@ -10,7 +10,7 @@ public:
 
 	virtual BOOL Execute();
 
-	virtual VOID SetTargetIndex(INT_PTR TargetIndex) { this->m_TargetIndex = TargetIndex; }
+	virtual VOID SetTargetIndex(INT_PTR TargetIndex);
 	virtual VOID SetReceiver(CArray<CDataType*>* Receiver);
 
 protected:
