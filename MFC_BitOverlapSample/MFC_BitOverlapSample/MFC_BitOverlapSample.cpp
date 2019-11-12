@@ -6,6 +6,7 @@
 #include "framework.h"
 #include "MFC_BitOverlapSample.h"
 #include "MFC_BitOverlapSampleDlg.h"
+#include "CEditNewDataDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,6 +73,7 @@ BOOL CMFCBitOverlapSampleApp::InitInstance()
 	SetRegistryKey(_T("アプリケーション ウィザードで生成されたローカル アプリケーション"));
 
 	CMFCBitOverlapSampleDlg dlg;
+	//CEditNewDataDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

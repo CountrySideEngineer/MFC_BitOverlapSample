@@ -9,5 +9,7 @@
 
 // プリコンパイルするヘッダーをここに追加します
 #include "framework.h"
+#include <afxcontrolbars.h>
+#include <afxwin.h>
 
 #endif //PCH_H

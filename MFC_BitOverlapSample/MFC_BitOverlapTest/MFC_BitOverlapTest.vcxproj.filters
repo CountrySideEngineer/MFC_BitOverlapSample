@@ -36,6 +36,51 @@
     <ClCompile Include="..\MFC_BitOverlapSample\CCheckOffsetOverlapItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="CBOSCommandManager_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CBOSCommandManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CUtility.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CUtility_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CAddDataTypeInfoCommand_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CAddDataTypeInfoCommand.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CDataType.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeleteDataTypeInfoCommand_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CDeleteDataTypeInfoCommand.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditDataTypeCommand_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CEditDataTypeCommand.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CCheckBitOverlap_UTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CCheckBitOverlap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CCheckOverlap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MFC_BitOverlapSample\CDataTypeInfo.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\MFC_BitOverlapSample\CCheckOffsetOverlap.h">
@@ -44,7 +89,13 @@
     <ClInclude Include="..\MFC_BitOverlapSample\CDataOffset.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="..\MFC_BitOverlapSample\CCheckOffsetOverlapItem.h">
+    <ClInclude Include="CEditNewDataDlg.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MFC_BitOverlapSample\CCheckBitOverlap.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MFC_BitOverlapSample\CCheckOverlap.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
