@@ -230,3 +230,43 @@ TEST(CUtility, Release_004)
 
 	ASSERT_EQ(0, ForTestReleaseArray.GetCount());
 }
+
+TEST(CUtility, Type2Bit_001)
+{
+	INT_PTR TypeSize = 0;
+	CUtility TestData;
+
+	ASSERT_EQ(0, TestData.Type2Bit<BYTE>(TypeSize));
+}
+
+TEST(CUtility, Type2Bit_002)
+{
+	INT_PTR TypeSize = 1;
+	CUtility TestData;
+
+	ASSERT_EQ(8, TestData.Type2Bit<BYTE>(TypeSize));
+}
+
+TEST(CUtility, Type2Bit_003)
+{
+	INT_PTR TypeSize = 2;
+	CUtility TestData;
+
+	ASSERT_EQ(16, TestData.Type2Bit<BYTE>(TypeSize));
+}
+
+TEST(CUtility, Type2Bit_004)
+{
+	INT_PTR TypeSize = 1;
+	CUtility TestData;
+
+	ASSERT_EQ(16, TestData.Type2Bit<WORD>(TypeSize));
+}
+
+TEST(CUtility, Type2Bit_005)
+{
+	INT_PTR TypeSize = 1;
+	CUtility TestData;
+
+	ASSERT_EQ(32, TestData.Type2Bit<DWORD>(TypeSize));
+}

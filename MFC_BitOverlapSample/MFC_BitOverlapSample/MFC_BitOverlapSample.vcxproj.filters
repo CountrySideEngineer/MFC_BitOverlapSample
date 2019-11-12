@@ -75,6 +75,12 @@
     <ClInclude Include="CEditDataTypeCommand.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="CCheckOverlap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CCheckBitOverlap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_BitOverlapSample.cpp">
@@ -126,6 +132,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CEditDataTypeCommand.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CCheckOverlap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CCheckBitOverlap.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

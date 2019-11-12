@@ -169,14 +169,18 @@
   <ItemGroup>
     <ClCompile Include="..\MFC_BitOverlapSample\CAddDataTypeInfoCommand.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CBOSCommandManager.cpp" />
+    <ClCompile Include="..\MFC_BitOverlapSample\CCheckBitOverlap.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CCheckOffsetOverlap.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CCheckOffsetOverlapItem.cpp" />
+    <ClCompile Include="..\MFC_BitOverlapSample\CCheckOverlap.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CDataOffset.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CDataType.cpp" />
+    <ClCompile Include="..\MFC_BitOverlapSample\CDataTypeInfo.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CDeleteDataTypeInfoCommand.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CEditDataTypeCommand.cpp" />
     <ClCompile Include="..\MFC_BitOverlapSample\CUtility.cpp" />
     <ClCompile Include="CAddDataTypeInfoCommand_UTest.cpp" />
+    <ClCompile Include="CCheckBitOverlap_UTest.cpp" />
     <ClCompile Include="CCheckOffsetOverlapItem_UTest.cpp" />
     <ClCompile Include="CCheckOffsetOverlap_UTest.cpp" />
     <ClCompile Include="CDataOffset_UTest.cpp" />
@@ -187,7 +191,9 @@
     <ClCompile Include="MFC_BitOverlapTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\MFC_BitOverlapSample\CCheckBitOverlap.h" />
     <ClInclude Include="..\MFC_BitOverlapSample\CCheckOffsetOverlap.h" />
+    <ClInclude Include="..\MFC_BitOverlapSample\CCheckOverlap.h" />
     <ClInclude Include="..\MFC_BitOverlapSample\CDataOffset.h" />
     <ClInclude Include="CEditNewDataDlg.h" />
   </ItemGroup>

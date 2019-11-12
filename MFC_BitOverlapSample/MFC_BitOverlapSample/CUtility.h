@@ -15,6 +15,7 @@ public:
 	template <class T> void Release(T** Target);
 	virtual void ExtractOffset(CString OffsetString, INT_PTR& DataOffset, INT_PTR& BitOffset);
 	virtual CString SetupOffset(const INT_PTR DataOffset, const INT_PTR BitOffset);
+	template <typename T> INT_PTR Type2Bit(INT_PTR TypeSize);
 
 protected:
 	virtual BOOL CheckBitOffsetFormat(CString BitOffset);
@@ -53,4 +54,20 @@ void CUtility::Release(T** Target)
 
 	delete *Target;
 	*Target = NULL;
+}
+
+/**
+ *	データ型とそのサイズに対応したビット長を返す。
+ *	(例：T = BYTE、TpyeSize = 2 → 16(bit))
+ *
+ *	@param	TypeBitSize	データの(ビット)サイズ
+ *	@return	データ型とサイズに対応したビット長
+ */
+template <typename T>
+INT_PTR CUtility::Type2Bit(INT_PTR TypeSize)
+{
+	const INT_PTR BitPerByte = 8;
+	INT_PTR BitSizeOfType = sizeof(T);
+
+	return (TypeSize * BitSizeOfType * BitPerByte);
 }
