@@ -4,6 +4,14 @@
 #include "CUtility.h"
 
 /**
+ *	デフォルトコンストラクタ
+ */
+CCheckBitOverlap::CCheckBitOverlap()
+	: m_TargetRowIndex(0)
+	, m_CompRowIndex(0)
+{}
+
+/**
  *	データの範囲設定に重複がないかの確認を実施する。
  *
  *	@param[in]	DataToCheck	確認対象のデータ設定へのポインタ
@@ -14,18 +22,18 @@ BOOL CCheckBitOverlap::CheckOverlap(const CArray<CDataType*>* DataToCheck)
 {
 	ASSERT(NULL != DataToCheck);
 
-	BOOL CheckResult = FALSE;
 	for (INT_PTR TargetIndex = 0; TargetIndex < DataToCheck->GetCount(); TargetIndex++) {
 		CDataType* Target = DataToCheck->GetAt(TargetIndex);
 		for (INT_PTR CompIndex = (TargetIndex + 1); CompIndex < DataToCheck->GetCount(); CompIndex++) {
 			CDataType* Comp = DataToCheck->GetAt(CompIndex);
 			if (TRUE == this->CheckOverlap(Target, Comp)) {
-				CheckResult = TRUE;
-				break;
+				this->m_TargetRowIndex = TargetIndex;
+				this->m_CompRowIndex = CompIndex;
+				return TRUE;	//1つでも重複が見つかったら、その場で処理を抜ける。
 			}
 		}
 	}
-	return CheckResult;
+	return FALSE;
 }
 
 /**

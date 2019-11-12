@@ -52,6 +52,7 @@ protected:
 	virtual void UpdateTable();
 	virtual void UpdateButton();
 	virtual void UpdateButton(BOOL IsEnable);
+	virtual BOOL RunOverlapCheck(INT_PTR& TaregetRowIndex, INT_PTR& CompRowIndex);
 
 protected:
 	CArray<CDataType*> m_DataTypeCollection;
@@ -73,4 +74,5 @@ public:
 	afx_msg void OnBnClickedButtonAddItem();
 	afx_msg void OnBnClickedButtonDeleteItem();
 	afx_msg void OnBnClickedButtonEditData();
+	afx_msg void OnBnClickedButtonCheckItem();
 };

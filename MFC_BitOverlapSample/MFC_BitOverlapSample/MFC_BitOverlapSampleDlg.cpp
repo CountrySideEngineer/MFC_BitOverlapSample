@@ -16,6 +16,7 @@
 #include "CAddDataTypeInfoCommand.h"
 #include "CDeleteDataTypeInfoCommand.h"
 #include "CEditDataTypeCommand.h"
+#include "CCheckBitOverlap.h"
 #include "CUtility.h"
 
 #ifdef _DEBUG
@@ -59,6 +60,7 @@ BEGIN_MESSAGE_MAP(CMFCBitOverlapSampleDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ADD_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonAddItem)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonDeleteItem)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT_DATA, &CMFCBitOverlapSampleDlg::OnBnClickedButtonEditData)
+	ON_BN_CLICKED(IDC_BUTTON_CHECK_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonCheckItem)
 END_MESSAGE_MAP()
 
 
@@ -403,4 +405,24 @@ void CMFCBitOverlapSampleDlg::RunCommand(ACommand* Command, CString CommandName)
 	else {
 		TRACE(_T("Command : NG (%s)\n"), CommandName);
 	}
+}
+
+void CMFCBitOverlapSampleDlg::OnBnClickedButtonCheckItem()
+{
+	INT_PTR TargetRowIndex = 0;
+	INT_PTR CompRowIndex = 0;
+	if (TRUE == this->RunOverlapCheck(TargetRowIndex, CompRowIndex)) {
+		AfxMessageBox(_T("重複があります。"), MB_OK | MB_ICONSTOP);
+	}
+}
+
+BOOL CMFCBitOverlapSampleDlg::RunOverlapCheck(INT_PTR& TaregetRowIndex, INT_PTR& CompRowIndex)
+{
+	CCheckBitOverlap CheckBitOverlap;
+	BOOL CheckResult = CheckBitOverlap.CheckOverlap(&(this->m_DataTypeCollection));
+	if (TRUE == CheckResult) {
+		TaregetRowIndex = CheckBitOverlap.GetTargetRowIndex();
+		CompRowIndex = CheckBitOverlap.GetCompRowIndex();
+	}
+	return CheckResult;
 }
