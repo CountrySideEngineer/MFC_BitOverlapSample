@@ -75,4 +75,5 @@ public:
 	afx_msg void OnBnClickedButtonDeleteItem();
 	afx_msg void OnBnClickedButtonEditData();
 	afx_msg void OnBnClickedButtonCheckItem();
+	afx_msg void OnBnClickedButtonExportData();
 };

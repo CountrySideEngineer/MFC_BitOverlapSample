@@ -139,7 +139,7 @@ void CDataOffset::SetOffset(CString BitOffset)
  */
 BOOL CDataOffset::CheckFormat(CString BitOffset)
 {
-	std::regex pattern(_T("[0-9]{1,}(\.[0-9A-Fa-f]){1,1}"));
+	std::regex pattern(_T("[0-9]{1,}(.[0-9A-Fa-f]){1,1}"));
 	std::cmatch Match;
 	TCHAR* PatternEnd = BitOffset.GetBuffer() + BitOffset.GetLength();
 	LPTSTR Buffer = BitOffset.GetBuffer();
