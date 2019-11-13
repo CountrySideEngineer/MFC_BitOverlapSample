@@ -17,6 +17,7 @@
 #include "CDeleteDataTypeInfoCommand.h"
 #include "CEditDataTypeCommand.h"
 #include "CCheckBitOverlap.h"
+#include "CBOSFile.h"
 #include "CUtility.h"
 
 #ifdef _DEBUG
@@ -61,6 +62,7 @@ BEGIN_MESSAGE_MAP(CMFCBitOverlapSampleDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_DELETE_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonDeleteItem)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT_DATA, &CMFCBitOverlapSampleDlg::OnBnClickedButtonEditData)
 	ON_BN_CLICKED(IDC_BUTTON_CHECK_ITEM, &CMFCBitOverlapSampleDlg::OnBnClickedButtonCheckItem)
+	ON_BN_CLICKED(IDC_BUTTON_EXPORT_DATA, &CMFCBitOverlapSampleDlg::OnBnClickedButtonExportData)
 END_MESSAGE_MAP()
 
 
@@ -407,6 +409,9 @@ void CMFCBitOverlapSampleDlg::RunCommand(ACommand* Command, CString CommandName)
 	}
 }
 
+/**
+ *	「確認」ボタンのクリックに対するイベントハンドラ
+ */
 void CMFCBitOverlapSampleDlg::OnBnClickedButtonCheckItem()
 {
 	INT_PTR TargetRowIndex = 0;
@@ -416,6 +421,13 @@ void CMFCBitOverlapSampleDlg::OnBnClickedButtonCheckItem()
 	}
 }
 
+/**
+ *	重複確認コマンドを実行する。
+ *
+ *	@param[out]	TargetRowIndex	重複が見つかったデータのインデックスの格納先
+ *	@param[out]	CompRowIndex	重複しているデータのインデックスの格納先
+ *	@return	重複の有無。重複があった場合にはTRUEを、なかった場合にはFALSEをそれぞれ返す。
+ */
 BOOL CMFCBitOverlapSampleDlg::RunOverlapCheck(INT_PTR& TaregetRowIndex, INT_PTR& CompRowIndex)
 {
 	CCheckBitOverlap CheckBitOverlap;
@@ -425,4 +437,25 @@ BOOL CMFCBitOverlapSampleDlg::RunOverlapCheck(INT_PTR& TaregetRowIndex, INT_PTR&
 		CompRowIndex = CheckBitOverlap.GetCompRowIndex();
 	}
 	return CheckResult;
+}
+
+void CMFCBitOverlapSampleDlg::OnBnClickedButtonExportData()
+{
+	CString AvailableExtention = _T("");
+	CString DefaultFileName = _T("");
+	CString Filter = _T("");
+
+	AvailableExtention.LoadString(IDS_STRING_AVAILABLE_EXTENTION_CSV);
+	DefaultFileName.LoadString(IDS_STRING_DEFAULT_FILE_NAME);
+	Filter.LoadString(IDS_STRING_AVAILABLE_FILE_TYPE_LIST);
+
+	CFileDialog FileDialog(FALSE, AvailableExtention, DefaultFileName, OFN_OVERWRITEPROMPT, Filter);
+	OPENFILENAME& OpenFileName = FileDialog.GetOFN();
+	OpenFileName.Flags &= ~OFN_ALLOWMULTISELECT;	//複数選択不許可
+	if (IDOK == FileDialog.DoModal()) {
+		CString OutputFilePath = FileDialog.GetPathName();
+		CBOSFile BosFile(OutputFilePath);
+		BosFile.WriteData(&(this->m_DataTypeCollection));
+	}
+
 }

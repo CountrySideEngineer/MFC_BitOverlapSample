@@ -189,11 +189,13 @@
   <ItemGroup>
     <ClInclude Include="ACommand.h" />
     <ClInclude Include="CAddDataTypeInfoCommand.h" />
+    <ClInclude Include="CBOSFile.h" />
     <ClInclude Include="CCheckBitOverlap.h" />
     <ClInclude Include="CCheckOffsetOverlap.h" />
     <ClInclude Include="CCheckOffsetOverlapItem.h" />
     <ClInclude Include="CBOSCommandManager.h" />
     <ClInclude Include="CCheckOverlap.h" />
+    <ClInclude Include="CCsvFormatter.h" />
     <ClInclude Include="CDataOffset.h" />
     <ClInclude Include="CDataType.h" />
     <ClInclude Include="CDataTypeInfo.h" />
@@ -213,11 +215,13 @@
   <ItemGroup>
     <ClCompile Include="ACommand.cpp" />
     <ClCompile Include="CAddDataTypeInfoCommand.cpp" />
+    <ClCompile Include="CBOSFile.cpp" />
     <ClCompile Include="CCheckBitOverlap.cpp" />
     <ClCompile Include="CCheckOffsetOverlap.cpp" />
     <ClCompile Include="CCheckOffsetOverlapItem.cpp" />
     <ClCompile Include="CBOSCommandManager.cpp" />
     <ClCompile Include="CCheckOverlap.cpp" />
+    <ClCompile Include="CCsvFormatter.cpp" />
     <ClCompile Include="CDataOffset.cpp" />
     <ClCompile Include="CDataType.cpp" />
     <ClCompile Include="CDataTypeInfo.cpp" />
