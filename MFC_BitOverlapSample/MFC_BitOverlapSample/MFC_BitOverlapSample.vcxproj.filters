@@ -81,6 +81,12 @@
     <ClInclude Include="CCheckBitOverlap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="CCsvFormatter.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CBOSFile.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFC_BitOverlapSample.cpp">
@@ -138,6 +144,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CCheckBitOverlap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CCsvFormatter.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CBOSFile.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
